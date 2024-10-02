@@ -6,8 +6,14 @@ static class Program
     {
         // Path to the input file
         // Any format is supported as long as 2 values of a domino stone are separated by vertical delimiter "|"
-        string filePath = "../../../dominoes.txt"; 
-        List<DominoStone> dominos = DominoReader.ReadDominosFromFile(filePath);
+        string filePath = "../../../dominos.txt";
+        string error;
+        List<DominoStone> dominos = DominoReader.ReadDominosFromFile(filePath, out error);
+        if (dominos == null)
+        {
+            Console.WriteLine(error);
+            return;
+        }
 
         // Print the loaded domino stones
         foreach (var domino in dominos)
@@ -15,9 +21,9 @@ static class Program
             Console.WriteLine(domino);
         }
 
-        DominoProblemSolver ps = new DominoProblemSolver(dominos);
         try
         {
+            DominoProblemSolver ps = new DominoProblemSolver(dominos);
             List<DominoStone>? chain = ps.Solve();
             
             if (chain == null)
@@ -44,9 +50,15 @@ static class Program
                 Console.WriteLine(nextStone);
             }
         }
+        catch (DominoProblemException e)
+        {
+            Console.WriteLine("Cannot build circular chain from this set of domino stones.");
+            Console.WriteLine(e.Message);
+        }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(e.Message);
+            throw;
         }
     }
 }

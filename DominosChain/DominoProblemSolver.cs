@@ -11,14 +11,15 @@ public class DominoProblemSolver
     private Dictionary<int, List<DominoStone>> edges;
     // Degree of graph nodes
     private Dictionary<int, int> degree;
-    public bool IsChainPossible()
+    
+    public string FailureReason { get; private set; }
+    public bool IsCircularChainPossible()
     {
         foreach (var deg in degree)
         {
             if (deg.Value % 2 != 0)
             {
-                Console.WriteLine($"Value {deg.Key} is placed {deg.Value} time on the domino stones, circular chain is not possible to be created.");
-                return false;
+                throw new DominoProblemException( $"Value {deg.Key} occurs {deg.Value} time(s) on the domino stones.");
             }
         }
 
@@ -66,7 +67,7 @@ public class DominoProblemSolver
     
     private List<DominoStone>? FindEulerianCycle()
     {
-        if (!IsChainPossible()) 
+        if (!IsCircularChainPossible())
             return null;
 
         // Hierholzer's algorithm to find an Eulerian cycle
