@@ -11,7 +11,10 @@ static class Program
         List<DominoStone> dominos = DominoReader.ReadDominosFromFile(filePath, out error);
         if (dominos == null)
         {
-            Console.WriteLine(error);
+            if( error != null ) 
+                Console.WriteLine(error);
+            else
+                Console.WriteLine("Error while reading input from file \"dominos.txt\"");
             return;
         }
 
@@ -31,22 +34,10 @@ static class Program
                 Console.WriteLine("Cannot build circular chain from this set of domino stones.");
                 return;
             }
+            
             Console.WriteLine("The circular chain from the given domino stones:");
-            DominoStone? prevStone = null;
             foreach (var nextStone in chain)
             {
-                if (prevStone!= null && nextStone.A != prevStone.B)
-                {
-                    nextStone.TurnOver();
-                    if (nextStone.A != prevStone.B)
-                    {
-                        Console.WriteLine(
-                            $"Error in the solution, stone {prevStone} does not match stone {nextStone}");
-                        return;
-                    }
-                }
-
-                prevStone = nextStone;
                 Console.WriteLine(nextStone);
             }
         }

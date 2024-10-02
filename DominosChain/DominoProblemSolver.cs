@@ -60,6 +60,11 @@ public class DominoProblemSolver
         }
     }
 
+    /// <summary>
+    /// Builds the circular chain if it can be built. If chain is impossible to be built null is returned or DominoProblemException is thrown
+    /// </summary>
+    /// <exception cref="DominoProblemException">Is thrown when number of values on the dominos set is not even.</exception>
+    /// <returns>Domino stones sequence which forms circular chain</returns>
     public List<DominoStone>? Solve()
     {
         return FindEulerianCycle();
